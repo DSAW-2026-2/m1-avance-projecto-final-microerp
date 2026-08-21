@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MicroERP - Vista Administrador">
+  <title>MicroERP - Administrador</title>
+  <script src="js/microerp.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class', theme: { extend: { colors: { primary: '#176B45', 'primary-hover': '#125737', 'primary-soft': '#EAF5ED', surface: '#F6F8F7' } } } };
+  </script>
+</head>
+<body class="min-h-screen bg-surface text-[#202522] antialiased dark:bg-gray-950 dark:text-gray-100">
+  <header class="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div class="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-12">
+      <a href="index.html" class="flex items-center gap-2.5"><span class="grid h-9 w-9 place-items-center rounded-lg bg-primary font-black text-white">M</span><span class="text-xl font-extrabold">MicroERP</span></a>
+      <div class="flex items-center gap-3">
+        <span class="hidden text-sm text-gray-500 sm:inline dark:text-gray-400">Usuario: <strong class="text-gray-800 dark:text-gray-100">Administrador</strong></span>
+        <button id="theme-toggle" type="button" class="grid h-9 w-9 place-items-center rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-800"></button>
+        <a href="index.html" class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold dark:border-gray-700">Salir</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1440px] px-5 py-8 sm:px-8 lg:px-12">
+    <section class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <h1 class="text-xl font-extrabold">Acciones</h1>
+      <div class="mt-4 flex flex-wrap gap-3">
+        <button id="new-product" type="button" class="rounded-lg bg-primary px-4 py-2.5 text-sm font-bold text-white hover:bg-primary-hover">Subir Producto</button>
+        <button id="edit-product" type="button" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-bold hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">Editar Producto</button>
+        <button id="remove-product" type="button" class="rounded-lg border border-red-200 bg-white px-4 py-2.5 text-sm font-bold text-red-600 hover:bg-red-50 dark:border-red-900 dark:bg-gray-800 dark:hover:bg-red-950/30">Quitar Producto</button>
+      </div>
+    </section>
+
+    <section class="mt-6 rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900 sm:p-6">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Formulario</p>
+          <h2 class="mt-1 text-xl font-extrabold">Editor de Producto</h2>
+        </div>
+        <span id="form-status" class="text-sm text-gray-500 dark:text-gray-400">Nuevo producto</span>
+      </div>
+
+      <form id="product-form" novalidate class="mt-6">
+        <input id="editing-id" type="hidden">
+        <div class="grid gap-4 md:grid-cols-2">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Código</span>
+            <input id="code" required placeholder="Ej. A-001" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-gray-700 dark:bg-gray-800">
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Nombre</span>
+            <input id="name" required placeholder="Nombre del producto" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-gray-700 dark:bg-gray-800">
+          </label>
+
+          <label class="block md:col-span-2">
+            <span class="mb-2 block text-sm font-bold">Descripción</span>
+            <textarea id="description" rows="3" placeholder="Descripción del producto" class="w-full resize-y rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-gray-700 dark:bg-gray-800"></textarea>
+          </label>
+        </div>
+
+        <div class="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Precio (Valor)</span>
+            <input id="price" required type="number" min="0" step="0.01" placeholder="$0.00" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Stock Inicial</span>
+            <input id="stock" required type="number" min="0" step="1" placeholder="0" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Categoría</span>
+            <select id="category" required class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+              <option value="">Seleccionar...</option>
+              <option>Electrónica</option>
+              <option>Ropa y Accesorios</option>
+              <option>Alimentos</option>
+              <option>Accesorios</option>
+              <option>Mobiliario</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Pasillo</span>
+            <input id="aisle" placeholder="Ej. 3" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Mostrador</span>
+            <select id="zone" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+              <option value="">Seleccionar...</option>
+              <option>Mostrador</option>
+              <option>Estante</option>
+              <option>Vitrina</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Ubicación</span>
+            <input id="location" placeholder="Ej. M-3" class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-800">
+          </label>
+        </div>
+
+        <p id="validation-message" class="mt-4 hidden rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm font-semibold text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-300"></p>
+
+        <div class="mt-6 flex justify-end gap-3">
+          <button id="cancel" type="button" class="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-bold dark:border-gray-700">Cancelar</button>
+          <button type="submit" class="rounded-lg bg-primary px-5 py-2.5 text-sm font-bold text-white hover:bg-primary-hover">Guardar Cambios</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="mt-6 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-gray-900">
+      <div class="flex items-center justify-between border-b border-gray-200 px-5 py-4 dark:border-gray-800">
+        <h2 class="text-xl font-extrabold">Tabla Editable</h2>
+        <span id="record-count" class="text-sm text-gray-500">0 productos</span>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-[700px] w-full text-left text-sm">
+          <thead class="bg-gray-50 text-xs uppercase tracking-wide text-gray-500 dark:bg-gray-800/70 dark:text-gray-400">
+            <tr>
+              <th class="px-5 py-3">Código</th>
+              <th class="px-5 py-3">Producto</th>
+              <th class="px-5 py-3">Stock</th>
+              <th class="px-5 py-3">Valor</th>
+              <th class="px-5 py-3">Acción</th>
+            </tr>
+          </thead>
+          <tbody id="product-rows" class="divide-y divide-gray-100 dark:divide-gray-800"></tbody>
+        </table>
+      </div>
+      <div id="empty-state" class="border-t border-gray-100 px-6 py-14 text-center dark:border-gray-800">
+        <div class="mx-auto grid h-12 w-12 place-items-center rounded-full bg-primary-soft text-xl dark:bg-green-950/40">＋</div>
+        <h3 class="mt-4 font-extrabold">Aún no hay productos en la tabla</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Utilice “Subir Producto” o complete el editor para registrar el primero.</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const form = document.getElementById('product-form');
+    const rows = document.getElementById('product-rows');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('record-count');
+    const message = document.getElementById('validation-message');
+    const status = document.getElementById('form-status');
+    const fields = ['code', 'name', 'description', 'price', 'stock', 'category', 'aisle', 'zone', 'location'];
+    let selectedId = null;
+
+    function clearForm() {
+      form.reset();
+      document.getElementById('editing-id').value = '';
+      selectedId = null;
+      message.classList.add('hidden');
+      status.textContent = 'Nuevo producto';
+      document.querySelectorAll('[data-select]').forEach(row => row.classList.remove('bg-green-50', 'dark:bg-green-950/20'));
+    }
+
+    function loadProduct(id) {
+      const product = MicroERP.getProducts().find(item => item.id === id);
+      if (!product) return;
+      selectedId = id;
+      document.getElementById('editing-id').value = id;
+      fields.forEach(key => {
+        document.getElementById(key).value = product[key] ?? '';
+      });
+      status.textContent = `Editando ${product.code}`;
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function render() {
+      const products = MicroERP.getProducts();
+      count.textContent = `${products.length} producto${products.length === 1 ? '' : 's'}`;
+      empty.classList.toggle('hidden', products.length > 0);
+      rows.innerHTML = products.map(product => `
+        <tr data-select="${product.id}" class="cursor-pointer transition hover:bg-gray-50 dark:hover:bg-gray-800/50">
+          <td class="px-5 py-4 font-mono text-xs">${product.code}</td>
+          <td class="px-5 py-4 font-bold">${product.name}</td>
+          <td class="px-5 py-4">${Number(product.stock || 0)} uds</td>
+          <td class="px-5 py-4">${MicroERP.money(product.price)}</td>
+          <td class="px-5 py-4"><button type="button" data-edit="${product.id}" class="rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-bold dark:border-gray-700">Editar</button></td>
+        </tr>`).join('');
+
+      document.querySelectorAll('[data-select]').forEach(row => row.addEventListener('click', event => {
+        selectedId = Number(row.dataset.select);
+        document.querySelectorAll('[data-select]').forEach(item => item.classList.remove('bg-green-50', 'dark:bg-green-950/20'));
+        row.classList.add('bg-green-50', 'dark:bg-green-950/20');
+        if (event.target.matches('[data-edit]')) loadProduct(selectedId);
+      }));
+    }
+
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+      const code = document.getElementById('code').value.trim();
+      const name = document.getElementById('name').value.trim();
+      const price = document.getElementById('price').value;
+      const stock = document.getElementById('stock').value;
+      const category = document.getElementById('category').value;
+
+      if (!code || !name || price === '' || stock === '' || !category) {
+        message.textContent = 'Complete Código, Nombre, Precio, Stock Inicial y Categoría antes de guardar.';
+        message.classList.remove('hidden');
+        return;
+      }
+
+      const products = MicroERP.getProducts();
+      const editingId = Number(document.getElementById('editing-id').value) || Date.now();
+      const product = { id: editingId };
+      fields.forEach(key => product[key] = document.getElementById(key).value.trim());
+      product.price = Number(product.price);
+      product.stock = Number(product.stock);
+
+      const index = products.findIndex(item => item.id === editingId);
+      if (index >= 0) products[index] = product;
+      else products.push(product);
+      MicroERP.saveProducts(products);
+      clearForm();
+      render();
+    });
+
+    document.getElementById('new-product').addEventListener('click', () => {
+      clearForm();
+      document.getElementById('code').focus();
+    });
+
+    document.getElementById('edit-product').addEventListener('click', () => {
+      if (!selectedId) {
+        message.textContent = 'Seleccione primero un producto de la Tabla Editable.';
+        message.classList.remove('hidden');
+        return;
+      }
+      loadProduct(selectedId);
+    });
+
+    document.getElementById('remove-product').addEventListener('click', () => {
+      if (!selectedId) {
+        message.textContent = 'Seleccione primero un producto de la Tabla Editable.';
+        message.classList.remove('hidden');
+        return;
+      }
+      const products = MicroERP.getProducts().filter(item => item.id !== selectedId);
+      MicroERP.saveProducts(products);
+      clearForm();
+      render();
+    });
+
+    document.getElementById('cancel').addEventListener('click', clearForm);
+    render();
+  </script>
+</body>
+</html>

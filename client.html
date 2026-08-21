@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="MicroERP - Vista Cliente">
+  <title>MicroERP - Cliente</title>
+  <script src="js/microerp.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: { extend: { colors: { primary: '#176B45', 'primary-hover': '#125737', 'primary-soft': '#EAF5ED', surface: '#F6F8F7' } } }
+    };
+  </script>
+</head>
+<body class="min-h-screen bg-surface text-[#202522] antialiased dark:bg-gray-950 dark:text-gray-100">
+  <header class="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
+    <div class="mx-auto flex max-w-[1440px] items-center gap-5 px-5 py-4 sm:px-8 lg:px-12">
+      <a href="index.html" class="flex shrink-0 items-center gap-2.5" aria-label="Volver a MicroERP">
+        <span class="grid h-9 w-9 place-items-center rounded-lg bg-primary font-black text-white">M</span>
+        <span class="text-xl font-extrabold tracking-tight">MicroERP</span>
+      </a>
+
+      <div class="hidden flex-1 md:block">
+        <label class="sr-only" for="global-search">Buscar producto</label>
+        <div class="relative mx-auto max-w-2xl">
+          <span class="pointer-events-none absolute inset-y-0 left-0 grid w-11 place-items-center text-gray-400">⌕</span>
+          <input id="global-search" type="search" placeholder="Buscar producto..."
+            class="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-11 pr-4 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-green-100 dark:border-gray-700 dark:bg-gray-800 dark:focus:ring-green-950">
+        </div>
+      </div>
+
+      <div class="ml-auto flex items-center gap-4">
+        <div class="hidden text-right sm:block">
+          <p class="text-xs text-gray-500 dark:text-gray-400">Usuario: <strong class="text-gray-800 dark:text-gray-100">Cliente</strong></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">ID: #C-10928</p>
+        </div>
+        <button id="theme-toggle" type="button" class="grid h-9 w-9 place-items-center rounded-lg border border-gray-300 bg-white text-sm dark:border-gray-700 dark:bg-gray-800"></button>
+        <a href="index.html" class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-semibold hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-800">Salir</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="mx-auto max-w-[1440px] px-5 py-7 sm:px-8 lg:px-12">
+    <div class="mb-5 md:hidden">
+      <input id="mobile-global-search" type="search" placeholder="Buscar producto..."
+        class="w-full rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm dark:border-gray-700 dark:bg-gray-900">
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-[290px_minmax(0,1fr)]">
+      <aside class="h-fit rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+        <h1 class="text-xl font-extrabold">Filtros</h1>
+        <div class="mt-6 space-y-6">
+          <label class="block">
+            <span class="mb-2 block text-sm font-bold">Nombre</span>
+            <input id="filter-name" type="search" placeholder="Escribir nombre..." class="w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-sm outline-none focus:border-primary dark:border-gray-700 dark:bg-gray-800">
+          </label>
+
+          <fieldset>
+            <legend class="mb-3 text-sm font-bold">Categoría</legend>
+            <div class="space-y-2.5 text-sm text-gray-700 dark:text-gray-300">
+              <label class="flex items-center gap-2"><input type="checkbox" name="category" value="Electrónica" class="h-4 w-4 accent-[#176B45]"> Electrónica</label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="category" value="Ropa y Accesorios" class="h-4 w-4 accent-[#176B45]"> Ropa y Accesorios</label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="category" value="Alimentos" class="h-4 w-4 accent-[#176B45]"> Alimentos</label>
+            </div>
+          </fieldset>
+
+          <div>
+            <p class="mb-3 text-sm font-bold">Valor (Rango de Precio)</p>
+            <div class="grid grid-cols-2 gap-2">
+              <label><span class="mb-1 block text-xs text-gray-500">Min: $0</span><input id="min-price" type="number" min="0" placeholder="0" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"></label>
+              <label><span class="mb-1 block text-xs text-gray-500">Max: $100</span><input id="max-price" type="number" min="0" placeholder="100" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm dark:border-gray-700 dark:bg-gray-800"></label>
+            </div>
+          </div>
+
+          <fieldset>
+            <legend class="mb-3 text-sm font-bold">Marca</legend>
+            <div class="space-y-2.5 text-sm text-gray-700 dark:text-gray-300">
+              <label class="flex items-center gap-2"><input type="checkbox" name="brand" value="Samsung" class="h-4 w-4 accent-[#176B45]"> Samsung</label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="brand" value="Nike" class="h-4 w-4 accent-[#176B45]"> Nike</label>
+              <label class="flex items-center gap-2"><input type="checkbox" name="brand" value="LG" class="h-4 w-4 accent-[#176B45]"> LG</label>
+            </div>
+          </fieldset>
+        </div>
+      </aside>
+
+      <section>
+        <div class="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary">Catálogo</p>
+            <h2 class="mt-1 text-2xl font-extrabold sm:text-3xl">Productos Disponibles</h2>
+          </div>
+          <span id="result-count" class="text-sm text-gray-500 dark:text-gray-400">0 productos</span>
+        </div>
+
+        <div id="product-grid" class="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3"></div>
+
+        <div id="empty-state" class="mt-5 rounded-xl border border-dashed border-gray-300 bg-white px-6 py-16 text-center dark:border-gray-700 dark:bg-gray-900">
+          <div class="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary-soft text-2xl dark:bg-green-950/40">▦</div>
+          <h3 class="mt-4 text-lg font-extrabold">Aún no hay productos disponibles</h3>
+          <p class="mx-auto mt-2 max-w-md text-sm leading-6 text-gray-500 dark:text-gray-400">Cuando el administrador registre productos, aparecerán aquí para que el cliente pueda buscarlos y filtrarlos.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const products = MicroERP.getProducts();
+    const grid = document.getElementById('product-grid');
+    const empty = document.getElementById('empty-state');
+    const count = document.getElementById('result-count');
+    const nameInput = document.getElementById('filter-name');
+    const globalSearch = document.getElementById('global-search');
+    const mobileGlobalSearch = document.getElementById('mobile-global-search');
+    const minPrice = document.getElementById('min-price');
+    const maxPrice = document.getElementById('max-price');
+
+    function selectedValues(name) {
+      return [...document.querySelectorAll(`input[name="${name}"]:checked`)].map(input => input.value);
+    }
+
+    function render() {
+      const text = [nameInput.value, globalSearch?.value, mobileGlobalSearch?.value].filter(Boolean).join(' ').trim().toLowerCase();
+      const categories = selectedValues('category');
+      const brands = selectedValues('brand');
+      const min = Number(minPrice.value || 0);
+      const max = maxPrice.value === '' ? Infinity : Number(maxPrice.value);
+
+      const filtered = products.filter(product => {
+        const haystack = `${product.name || ''} ${product.code || ''}`.toLowerCase();
+        return (!text || haystack.includes(text)) &&
+          (!categories.length || categories.includes(product.category)) &&
+          (!brands.length || brands.includes(product.brand)) &&
+          Number(product.price || 0) >= min && Number(product.price || 0) <= max;
+      });
+
+      count.textContent = `${filtered.length} producto${filtered.length === 1 ? '' : 's'}`;
+      empty.classList.toggle('hidden', filtered.length > 0);
+      grid.innerHTML = filtered.map(product => `
+        <article class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm dark:border-gray-800 dark:bg-gray-900">
+          <span class="inline-flex rounded-full bg-green-50 px-2.5 py-1 text-xs font-bold text-green-700 dark:bg-green-950/40 dark:text-green-300">${Number(product.stock || 0) > 5 ? 'Disponible' : 'Bajo Stock'}</span>
+          <h3 class="mt-4 text-lg font-extrabold">${product.name}</h3>
+          <p class="mt-1 text-sm text-gray-500">${product.category || 'Sin categoría'}</p>
+          <div class="mt-5 flex items-center justify-between gap-3">
+            <strong class="text-xl text-primary dark:text-green-400">${MicroERP.money(product.price)}</strong>
+            <button type="button" class="rounded-lg border border-gray-300 px-3 py-2 text-sm font-bold dark:border-gray-700">Ver Detalles</button>
+          </div>
+        </article>`).join('');
+    }
+
+    document.querySelectorAll('input').forEach(input => input.addEventListener('input', render));
+    document.querySelectorAll('input[type="checkbox"]').forEach(input => input.addEventListener('change', render));
+    render();
+  </script>
+</body>
+</html>
